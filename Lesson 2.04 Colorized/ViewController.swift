@@ -7,13 +7,23 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
+    @IBOutlet weak var colorizedView: UIView!
+    @IBOutlet var scaleLabels: [UILabel]!
+    
+    private var colorsRGB: [CGFloat] = [0.0, 0.0, 0.0]
+    
+    @IBAction func colorSlider(_ sender: UISlider) {
+        scaleLabels[sender.tag].text = String(format: "%.2f", sender.value)
+        colorsRGB[sender.tag] = CGFloat(sender.value)
+        
+        colorizedView.backgroundColor = UIColor(
+            red: colorsRGB[0],
+            green: colorsRGB[1],
+            blue: colorsRGB[2],
+            alpha: 1
+        )
     }
-
-
+    
 }
-
