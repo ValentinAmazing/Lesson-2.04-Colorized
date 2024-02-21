@@ -17,10 +17,19 @@ final class SetColorViewController: UIViewController {
     weak var delegate: SetColorViewControllerDelegate?
     var color: UIColor?
     
-    private var colorsRGB: [CGFloat] = [0.0, 0.0, 0.0]
+    private let redTag = 0, greenTag = 1, blueTag = 2
+    private var colorsRGB: [CGFloat] = [0, 0, 0]
     
     override func viewDidLoad() {
         colorizedView.backgroundColor = color
+
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        
+        color?.getRed(&red, green: &green, blue: &blue, alpha: nil)
+
+        prepareView(red: red, green: green, blue: blue)
     }
     
     @IBAction func colorSlider(_ sender: UISlider) {
@@ -28,9 +37,9 @@ final class SetColorViewController: UIViewController {
         colorsRGB[sender.tag] = CGFloat(sender.value)
         
         color = UIColor(
-            red: colorsRGB[0],
-            green: colorsRGB[1],
-            blue: colorsRGB[2],
+            red: colorsRGB[redTag],
+            green: colorsRGB[greenTag],
+            blue: colorsRGB[blueTag],
             alpha: 1
         )
         
@@ -38,7 +47,23 @@ final class SetColorViewController: UIViewController {
     }
     
     @IBAction func doneAction() {
-        delegate?.setBackgroundColor(color!)
+        delegate?.setBackgroundColor(color ?? UIColor())
         dismiss(animated: true)
+    }
+}
+
+extension SetColorViewController {
+    private func prepareView(red: CGFloat, green: CGFloat, blue: CGFloat) {
+        colorsRGB[redTag] = red
+        colorsRGB[greenTag] = green
+        colorsRGB[blueTag] = blue
+        
+        scaleLabels[redTag].text = String(format: "%.2f", red)
+        scaleLabels[greenTag].text = String(format: "%.2f", green)
+        scaleLabels[blueTag].text = String(format: "%.2f", blue)
+        
+        colorSliders[redTag].value = Float(red)
+        colorSliders[greenTag].value = Float(green)
+        colorSliders[blueTag].value = Float(blue)
     }
 }

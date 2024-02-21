@@ -20,10 +20,9 @@ final class MainViewController: UIViewController {
     }
 }
 
+// MARK: - SetColorViewControllerDelegate
 extension MainViewController: SetColorViewControllerDelegate {
     func setBackgroundColor(_ color: UIColor) {
-        print("lol")
-        
         view.backgroundColor = color
     }
 }
